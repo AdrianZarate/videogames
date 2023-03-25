@@ -1,61 +1,97 @@
 import {useState} from 'react';
+import { useSelector } from 'react-redux';
 import axios from 'axios'
 
 const Form = () => {
 
+    const genres = useSelector(state => state.genres);
+
     const [form, setForm] = useState({
         name: "",
         description: "",
-        platforms: '',
+        platforms: [],
         image: "",
         release_date: "",
-        rating: "",
+        rating: null,
         genreId: []
     });
+
+    const [options, setOptions] = useState(false)
+    
+    const toggleOptions = (event) => {
+        event.preventDefault() 
+        console.log('despliegue');
+        setOptions(!options)
+    }
     
     // leer lo que escribi 
     const changeHandler = (event) => {
-        const property = event.target.name;
-        const value = event.target.value;
+        const {name, value, checked} = event.target;
         
         // validate({...form, [property]: value});
+        if (name === 'genreId') {
+            if (checked) {
+                setForm({...form, [name]: [...form[name], (Number(value))]})
+            } else {
+                const actualizandoGenreId = form.genreId.filter(id => id !== Number(value))
+                setForm({...form, [name]: actualizandoGenreId})
+            }
+        } 
 
-        if (property === 'genreID') {
-            setForm({...form, [property]: property.push(value)});
-        } else {
-            setForm({...form, [property]: value});
+        let validarName = /^[a-zA-Z\s]*$/;
+        if (name === 'name' && validarName.test(value)) {
+            setForm({...form, [name]: value})
+        } else if (name === 'name' && !validarName.test(value)) {
+            alert('ingrese el solo letras')
         }
+
+        let validarImage = /(\.jpg|\.jpeg|\.png)$/i;
+        if (name === 'image' && validarImage.test(value)) {
+            setForm({...form, [name]: value});
+        } else if (name === 'image' && !validarImage.test(value)) {
+            alert('Ingrese solo imágenes con extensión .jpg, .jpeg o .png');
+        }
+
+        if (name === 'rating') {
+            setForm({...form, [name]: Number(value)})
+        }
+
+        if (name === 'platforms') {
+            setForm({...form, [name]: [value]})
+        }
+
+        if (name !== 'rating' && name !== 'platforms' && name !== 'genreId' && name !== 'name') {
+            setForm({...form, [name]: value});
+        }
+        
+        console.log(form);
+        
     }
-
-    // const [errors, setErrors] = useState({
-    //     name: "",
-    //     description: "",
-    //     platforms: '',
-    //     image: "",
-    //     release_date: "",
-    //     rating: "",
-    //     genreId: []
-    // });
-    
-    // const validate = (form) => {
-    //     if (/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(form)) {
-            
-    //     } else {
-            
-    //     }
-    // }
-
-    const submitHandler = (event) => {
+      
+    function formatDate(date) {
+        const year = date.getFullYear();
+        const month = ("0" + (date.getMonth() + 1)).slice(-2);
+        const day = ("0" + date.getDate()).slice(-2);
+        return `${year}-${month}-${day}`;
+    }
+      
+    const submitHandler = async (event) => {
+        console.log('es la parte del post');
         event.preventDefault();
-        axios.post('http://localhost:3001/videogames', form)
-        .then(res => alert(res))
-        .catch(err => alert(err))
+        const values = Object.values(form);
+        if (values.includes('') || values.includes(null)) {
+            alert('Por favor completa todos los campos')
+        } else {
+            await axios.post('http://localhost:3001/videogames', form)
+            .then(res => console.log('soy la respuesta del POST',res.data))
+            .catch(err => console.log('SOY EL ERROR DEL POST',form))
+        }
     }
 
     return (
         <form onSubmit={submitHandler}>
             <div>
-                <laber for='name'>Nombre</laber>
+                <laber >Nombre</laber>
                 <input type='text' value={form.name} onChange={changeHandler} name='name'/>
             </div>
             <div>
@@ -71,16 +107,33 @@ const Form = () => {
                 <input type='text' value={form.platforms} onChange={changeHandler} name='platforms'/>
             </div>
             <div>
-                <laber>Fecha de lanzamiento</laber>
-                <input type='date' value={form.release_date} onChange={changeHandler} name='release_date'/>
+                <label>Fecha de lanzamiento</label>
+                <input type='date' value={form.release_date ? formatDate(new Date(form.release_date)) : ''} onChange={changeHandler} name='release_date' />
             </div>
             <div>
                 <laber>Rating</laber>
                 <input type='number' value={form.rating} onChange={changeHandler} name='rating'/>
             </div>
             <div>
-                <laber>Generos</laber>
-                <input type='number' value={form.genreId} onChange={changeHandler} name='genreId' />
+                <button onClick={toggleOptions}>Despliegue generos</button>
+                {options && (
+                    <div>{
+                        genres.map((genre, index) => {
+                            return (
+                                <label>
+                                    {genre.name}
+                                    <input 
+                                        type='checkbox'
+                                        value={index}
+                                        name='genreId'
+                                        // checked={isChecked}
+                                        onChange={changeHandler}
+                                     />
+                                </label>
+                            )
+                        })}
+                    </div>
+                )}
             </div>
             <button type='submit'>submit</button>
         </form>

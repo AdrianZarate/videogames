@@ -6,7 +6,9 @@ export const GET_VIDEOGAMES_NAME = 'GET_VIDEOGAMES_NAME';
 export const GET_GENRES = 'GET_GENRES'; 
 export const GENRES_SELECTED = 'GENRES_SELECTED';
 export const ORDENAR_ALFABETICAMENTE = 'ORDENAR_ALFABETICAMENTE';
-export const ORDENAR_RATING = 'ORDENAR_RATING'
+export const ORDENAR_RATING = 'ORDENAR_RATING';
+export const ORDENAR_CREATED = 'ORDENAR_CREATED';
+
 
 // Busca los primeros 20 juegos de la api
 export const getVideogames = () => {
@@ -63,7 +65,7 @@ export const ordenarAlfabeticamente = (tipo) => {
         const array = apiData.data;
     
         let newArray;
-        if (tipo === "ascendente") {
+        if (tipo === "descendente") {
                 newArray = array.sort((a, b) => {
                 let nameA = a.name.toUpperCase(); // convertir a mayúsculas para ignorar mayúsculas y minúsculas
                 let nameB = b.name.toUpperCase(); // convertir a mayúsculas para ignorar mayúsculas y minúsculas
@@ -72,7 +74,7 @@ export const ordenarAlfabeticamente = (tipo) => {
                 if (nameA < nameB) return -1;
                 return 0;
             });
-        } else {
+        } else if (tipo === 'ascendente'){
                 newArray = array.sort((a, b) => {
                 let nameA = a.name.toUpperCase(); // convertir a mayúsculas para ignorar mayúsculas y minúsculas
                 let nameB = b.name.toUpperCase(); 
@@ -82,7 +84,8 @@ export const ordenarAlfabeticamente = (tipo) => {
             });
         }
 
-    dispatch({type: ORDENAR_ALFABETICAMENTE, payload: newArray});
+        // if (tipo) 
+        dispatch({type: ORDENAR_ALFABETICAMENTE, payload: newArray});
     
     };
 };
@@ -101,5 +104,22 @@ export const ordenarRating = (tipo) => {
         }
         
         dispatch({type: ORDENAR_RATING, payload: gamesFilterRating})
+    }
+};
+
+export const ordenarCreated = (tipo) => {
+    return async function(dispatch) {
+        const apiData = await axios.get('http://localhost:3001/videogames');
+        const array = apiData.data;
+
+        console.log('el array de created', array);
+        let gamesFilterCreated;
+        if (tipo === 'created') {
+            gamesFilterCreated = array.filter((game) => game.created === true)
+        } else {
+            gamesFilterCreated = array.filter((game) => game.created === false)
+        }
+        
+        dispatch({type: ORDENAR_RATING, payload: gamesFilterCreated})
     }
 };

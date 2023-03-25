@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector} from "react-redux";
-import { genresSelected, getVideogames, getVideogamesName, ordenarAlfabeticamente, ordenarRating } from "../../redux/actions";
+import { genresSelected, getVideogames, getVideogamesName, ordenarAlfabeticamente, ordenarRating, ordenarCreated } from "../../redux/actions";
 import axios from "axios";
 
 const SearchBar = () => {
@@ -23,6 +23,14 @@ const SearchBar = () => {
     const [alfabeto, setAlfabeto] = useState('');
 
     const [rating, setRating] = useState('');
+
+    const [created, setCreated] = useState('');
+
+    const [validar, setValidar] = useState({
+        validarAlfab: false,
+        validarRating: false,
+        validarCreated: false
+    })
     
     // validar Name
     const verificarNombre = async () => {
@@ -65,10 +73,11 @@ const SearchBar = () => {
 
         if (checked) {
             setAlfabeto(value)
-            dispatch(ordenarAlfabeticamente(alfabeto))
+            // dispatch(ordenarAlfabeticamente(alfabeto))
         } else {
             setAlfabeto('');
-            dispatch(getVideogames())
+            setValidar({...validar, validarAlfab: !validar.validarAlfab})
+            // dispatch(getVideogames())
         }
     }
     
@@ -77,38 +86,56 @@ const SearchBar = () => {
         const {value, checked} = event.target;
         if (checked) {
             setRating(value)
-            dispatch(ordenarRating(rating))
         } else {
             setRating('');
-            dispatch(getVideogames())
+            setValidar({...validar, validarRating: !validar.validarRating})
         }
     }
 
+    const handleCreated = (event) => {
+        const {value, checked} = event.target;
+        if (checked) {
+            setCreated(value)
+        } else {
+            setCreated('');
+            setValidar({...validar, validarCreated: !validar.validarCreated})
+        }
+    }
+    
     useEffect(() => {
         console.log('estoy con genresCkecked');
         dispatch(genresSelected(genresChecked))
-
-    },[genresChecked])
-
-
-    // este codigo ya se puede eliminar
-    // useEffect(() => {
-    //     if (!alfabeto) {
-    //         dispatch(getVideogames())
-    //     } 
-    //     if (alfabeto) {
-    //         dispatch(ordenarAlfabeticamente(alfabeto))
-    //     }
         
-    //     console.log('si escucho al alfabeto alv', alfabeto);
-    // },[alfabeto]);
+    },[genresChecked])
     
-    // useEffect(() => {
-    //     if (!rating) {
-    //     }
-    //     if (rating) {
-    //     }
-    // },[rating])
+    useEffect(() => {
+        if (!alfabeto && validar.validarAlfab) {
+            dispatch(getVideogames())
+        } 
+        if (alfabeto) {
+            dispatch(ordenarAlfabeticamente(alfabeto))
+        }
+        
+        console.log('si escucho al alfabeto alv', alfabeto);
+    },[alfabeto]);
+    
+    useEffect(() => {
+        if (!rating && validar.validarRating) {
+            dispatch(getVideogames())
+        }
+        if (rating) {
+            dispatch(ordenarRating(rating))
+        }
+    },[rating])
+
+    useEffect(() => {
+        if (!created && validar.validarCreated) {
+            dispatch(getVideogames())
+        }
+        if (created) {
+            dispatch(ordenarCreated(created))
+        }
+    },[created])
 
     return (
         <div>
@@ -176,6 +203,29 @@ const SearchBar = () => {
                         value='descendente'
                         checked={rating === 'descendente'}
                         onChange={handleRating}
+                        />
+                    </label>
+                </div>
+            )}
+            <button onClick={toggleOptions} value='optionsCreated'>tipo de game</button>
+            {options.optionsCreated && (
+                <div>
+                    <label> 
+                        created
+                        <input
+                        type='checkbox'
+                        value='created'
+                        checked={created === 'created'}
+                        onChange={handleCreated}
+                        />
+                    </label>
+                    <label> 
+                        not created
+                        <input
+                        type='checkbox'
+                        value='notCreated'
+                        checked={created === 'notCreated'}
+                        onChange={handleCreated}
                         />
                     </label>
                 </div>

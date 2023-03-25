@@ -32,6 +32,7 @@ const CardsContainer = () => {
                 <div className={style.containerCards}>
                     {CardsARenderizar.map(game => {
                         return <Card
+                            id={game.id}
                             name={game.name}
                             image={game.image}
                             genres={game.genres}
@@ -43,6 +44,7 @@ const CardsContainer = () => {
                         if(genresSelected.includes(genre) && contador < 15) {
                             contador++;
                             return <Card
+                            id={game.id}
                             name={game.name}
                             image={game.image}
                             genres={game.genres}

@@ -9,34 +9,40 @@ const {Videogame, Genre} = require('../db')
 
 // const URL = `https://rawg.io/api/games?key=${API_KEY}`;
 
-const getVideogames = async (url, hundredGames = []) => {
-
+const getVideogames = async (url, cienJuegos = [], count = true) => {
     
-    if (hundredGames.length >= 100) return hundredGames.splice(0, 100);
+    console.log('sacando los 100 juegos van: ',cienJuegos.length);
+    
+    if (cienJuegos.length >= 100) return cienJuegos.splice(0, 100);
 
-    const responseDB = await Videogame.findAll({include: { model: Genre }})
-        .then(response => response.map(game => ({
-            name: game.name,
-            image: game.image,
-            genres: game.genres.map(genre => genre.name),
-            rating: game.rating
-        })));
+    if (count) {
+        const responseDB = await Videogame.findAll({include: { model: Genre }})
+            .then(response => response.map(game => ({
+                id: game.id,
+                name: game.name,
+                image: game.image,
+                genres: game.genres.map(genre => genre.name),
+                rating: game.rating,
+                created: game.created
+            })));
+        count = false
+        cienJuegos = cienJuegos.concat(responseDB)
+    }
 
-    hundredGames = hundredGames.concat(responseDB)
     const {next, results} = (await axios.get(url)).data;
 
     const response = results.map(game => ({
+        id: game.id,
         name: game.name,
         image: game.background_image,
         genres: game.genres.map(genre => genre.name),
-        rating: game.rating
+        rating: game.rating,
+        created: game.created = false
     }));
-    console.log('estoy con hundred');
-    hundredGames = hundredGames.concat(response)
 
-    console.log(hundredGames.length);
+    cienJuegos = cienJuegos.concat(response)
 
-    return getVideogames(next, hundredGames);
+    return getVideogames(next, cienJuegos, count);
 }
 
 const uuidRegex = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$/;
@@ -44,21 +50,49 @@ const uuidRegex = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0
 const getVideogameById = async (id) => {
 
     let response; 
-    
     if(uuidRegex.test(id)) {
+        console.log('buscando por id');
+        
         response = await Videogame.findByPk(id, {
-            attributes: ['id', 'name', 'description'],
+            attributes: ['id', 'name', 'description','platforms', 'image', 'release_date','rating','created'],
             include: [{
                 model: Genre,
                 attributes: ['name'],
                 through: { attributes: [] } // para evitar incluir la tabla intermedia
             }]
         });
-    } else {
-        response = await axios.get(`https://rawg.io/api/games/${id}?key=${API_KEY}`);
-    }
 
-    return response.data;
+        const nuevaResponse = {
+            id: response.id,
+            name: response.name,
+            description: response.description,
+            platforms: response.platforms,
+            image: response.image,
+            released: response.release_date,
+            rating: response.rating,
+            created: response.created,
+            genres: response.genres.map(genre => genre.dataValues.name)
+        }
+
+        console.log('luego de la promesa', nuevaResponse.genres);
+        return nuevaResponse;
+    } else {
+        response = await axios.get(`https://rawg.io/api/games/${id}?key=${API_KEY}`)
+        .then(response => response.data)
+        .then(response => ({
+            id: response.id,
+            name: response.name,
+            image: response.background_image,
+            platforms: response.platforms.map(platform => platform.platform.name),
+            description: response.description_raw,
+            released: response.released,
+            rating: response.rating,
+            genres: response.genres.map(genre => genre.name),
+            created: false
+        }));
+        console.log('si estoy entrando', response);
+        return response; 
+    }
 }
 
 const getVideogameName = async (name) => {
@@ -77,6 +111,7 @@ const getVideogameName = async (name) => {
     const response = await axios.get(`https://rawg.io/api/games?search=${nameToLower}&key=${API_KEY}`)
     .then(response => response.data.results)
     .then(response => response.map(response => ({
+        // id: response.id,
         name: response.name,
         image: response.background_image,
         genres: response.genres.map(genre => genre.name),
@@ -101,11 +136,12 @@ const postVideogame = async (name, description, platforms, image, release_date, 
         release_date, 
         rating
     })
-    console.log(newVideogame.__proto__);
+    console.log('estoy en el post revisando newVideogame.__proto__ ',newVideogame.__proto__);
+    console.log('datos para guardar en la DB',newVideogame);
 
     await newVideogame.addGenres(genreId); // que hace esta linea?
     
-    return newVideogame;
+    return newVideogame.dataValues;
 }
 
 module.exports = {
