@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector} from "react-redux";
 import { genresSelected, getVideogames, getVideogamesName, ordenarAlfabeticamente, ordenarRating, ordenarCreated } from "../../redux/actions";
 import axios from "axios";
+import style from './SearchBar.module.css'
 
 const SearchBar = () => {
 
@@ -138,98 +139,101 @@ const SearchBar = () => {
     },[created])
 
     return (
-        <div>
-            <input placeholder="Videogame..." onChange={changeHandler}></input>
+        <div className={style.container}>
+            <div>
+            <input type="search" placeholder="Videogame..." onChange={changeHandler} value={name}/>
             <button onClick={() => verificarNombre()}>buscar</button>
-            <hr/>
-            <button onClick={toggleOptions} value='optionsGenres'>Filtrar por genres</button>
-            {options.optionsGenres && ( 
-                <div>
-                    {genres.map(genre => {
-                        const isChecked = genresChecked.includes(genre.name)
-                        return (
-                        <label>
-                            {genre.name}
+            </div>
+            <div>
+                <button onClick={toggleOptions} value='optionsGenres'>Filtrar por genres</button>
+                {options.optionsGenres && ( 
+                    <div>
+                        {genres.map(genre => {
+                            const isChecked = genresChecked.includes(genre.name)
+                            return (
+                            <label>
+                                {genre.name}
+                                <input
+                                type='checkbox'
+                                value={genre.name}
+                                name='genres'
+                                checked={isChecked}
+                                onChange={handleOptionChange}
+                                />
+                            </label>
+                        )})}
+                    </div>
+                )}
+                <button onClick={toggleOptions} value='optionsAlfab'>Alfabeticamente</button>
+                {options.optionsAlfab && (
+                    <div>
+                        <label> 
+                            ascendente
                             <input
                             type='checkbox'
-                            value={genre.name}
-                            name='genres'
-                            checked={isChecked}
-                            onChange={handleOptionChange}
+                            value='ascendente'
+                            checked={alfabeto === 'ascendente'}
+                            onChange={handleAlfabetico}
                             />
                         </label>
-                    )})}
-                </div>
-            )}
-            <button onClick={toggleOptions} value='optionsAlfab'>Alfabeticamente</button>
-            {options.optionsAlfab && (
-                <div>
-                    <label> 
-                        ascendente
-                        <input
-                        type='checkbox'
-                        value='ascendente'
-                        checked={alfabeto === 'ascendente'}
-                        onChange={handleAlfabetico}
-                        />
-                    </label>
-                    <label> 
-                        descendente
-                        <input
-                        type='checkbox'
-                        value='descendente'
-                        checked={alfabeto === 'descendente'}
-                        onChange={handleAlfabetico}
-                        />
-                    </label>
-                </div>
-            )}
-            <button onClick={toggleOptions} value='optionsRating'>por Rating</button>
-            {options.optionsRating && (
-                <div>
-                    <label> 
-                        ascendente
-                        <input
-                        type='checkbox'
-                        value='ascendente'
-                        checked={rating === 'ascendente'}
-                        onChange={handleRating}
-                        />
-                    </label>
-                    <label> 
-                        descendente
-                        <input
-                        type='checkbox'
-                        value='descendente'
-                        checked={rating === 'descendente'}
-                        onChange={handleRating}
-                        />
-                    </label>
-                </div>
-            )}
-            <button onClick={toggleOptions} value='optionsCreated'>tipo de game</button>
-            {options.optionsCreated && (
-                <div>
-                    <label> 
-                        created
-                        <input
-                        type='checkbox'
-                        value='created'
-                        checked={created === 'created'}
-                        onChange={handleCreated}
-                        />
-                    </label>
-                    <label> 
-                        not created
-                        <input
-                        type='checkbox'
-                        value='notCreated'
-                        checked={created === 'notCreated'}
-                        onChange={handleCreated}
-                        />
-                    </label>
-                </div>
-            )}
+                        <label> 
+                            descendente
+                            <input
+                            type='checkbox'
+                            value='descendente'
+                            checked={alfabeto === 'descendente'}
+                            onChange={handleAlfabetico}
+                            />
+                        </label>
+                    </div>
+                )}
+                <button onClick={toggleOptions} value='optionsRating'>por Rating</button>
+                {options.optionsRating && (
+                    <div>
+                        <label> 
+                            ascendente
+                            <input
+                            type='checkbox'
+                            value='ascendente'
+                            checked={rating === 'ascendente'}
+                            onChange={handleRating}
+                            />
+                        </label>
+                        <label> 
+                            descendente
+                            <input
+                            type='checkbox'
+                            value='descendente'
+                            checked={rating === 'descendente'}
+                            onChange={handleRating}
+                            />
+                        </label>
+                    </div>
+                )}
+                <button onClick={toggleOptions} value='optionsCreated'>tipo de game</button>
+                {options.optionsCreated && (
+                    <div>
+                        <label> 
+                            created
+                            <input
+                            type='checkbox'
+                            value='created'
+                            checked={created === 'created'}
+                            onChange={handleCreated}
+                            />
+                        </label>
+                        <label> 
+                            not created
+                            <input
+                            type='checkbox'
+                            value='notCreated'
+                            checked={created === 'notCreated'}
+                            onChange={handleCreated}
+                            />
+                        </label>
+                    </div>
+                )}
+            </div>
         </div>
     )
 }

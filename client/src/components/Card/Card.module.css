@@ -1,5 +1,56 @@
-.container img {
-    width: 400px;
+.link {
+    text-decoration: none;
+}
+
+.container {
+    width: 18rem;
+    height: 24rem;
+    border-radius: 30px;
+    background: #212121;
+    box-shadow: 15px 15px 30px #212121,
+                -15px -15px 30px rgb(60, 60, 60);
+    margin: 20px;
+    transition: box-shadow 0.3s ease-in-out; /* Agrega una transición al efecto hover */
+}   
+
+.container:hover {
+    box-shadow: 10px 10px 20px #212121,
+                -10px -10px 20px rgb(80, 80, 80); /* Cambia la sombra del contenedor en el hover */
+}
+
+.containerImg {
+    width: 250px;
     height: 200px;
+    border-radius: 5px;
+    border: 1px solid #E7E7E7;
+    display: flex;
+    margin: auto;
+}
+
+.containerImg img {
+    width: 100%;
+    height: 100%;
     object-fit: cover;
+    border-radius: 5px;
+    border: 1px solid #E7E7E7;    
+}
+
+.container h2 {
+    color: #E7E7E7;
+    text-align: center;
+    height: 65px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+}
+
+.container h4 {
+    color: #E7E7E7;
+    text-align: center;
+    /* height: 65px; */
+    /* background-color: rgb(17, 72, 72); */
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

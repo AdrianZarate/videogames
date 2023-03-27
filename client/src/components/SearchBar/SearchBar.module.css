@@ -1,0 +1,12 @@
+body {
+    margin: 0;
+}
+
+.container {
+    display: grid;
+    width: 100vw;
+    height: 100px;
+    grid-template: repeat(2, 1fr) / repeat(4, 1fr);
+    background-color: rgb(83, 129, 169);
+    margin-top: 20px;
+}

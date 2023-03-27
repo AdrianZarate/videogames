@@ -14,6 +14,7 @@ const getGenres = async () => {
         const response = await axios.get(`https://api.rawg.io/api/genres?key=${API_KEY}`);
         const genresName = response.data.results.map(genre => ({name: genre.name}));
     
+        console.log('soy los generos que guardo', genresName);
         await Genre.bulkCreate(genresName);
         return genresName;
     }

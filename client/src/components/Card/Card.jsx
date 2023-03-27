@@ -3,14 +3,17 @@ import style from './Card.module.css';
 
 const Card = (props) => {
     return (
-        <div className={style.container}>
-            <Link to={`/detail/${props.id}`}>
-                <p>Name: {props.name}</p>
+        <>
+            <Link to={`/detail/${props.id}`} className={style.link}>
+                <div className={style.container}>
+                    <h2>{props.name}</h2>
+                    <div className={style.containerImg}>
+                        <img src={props.image} alt={props.name}/>
+                    </div>
+                    <h4>{props.genres.map(genre => <>{genre} </>)} </h4>
+                </div> 
             </Link>
-            <img src={props.image} alt={props.name}/>
-            <p>Genres: {props.genres.map(genre => <>{genre} </>)} </p>
-            
-        </div>
+        </>
     )
 }
 

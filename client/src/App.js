@@ -1,13 +1,14 @@
 import { Route, Routes, useLocation } from "react-router-dom";
 import NavBar from "./components/NavBar/NavBar";
 import {Home, Landing, Form, Detail} from './views'
+import style from './App.css'
 
 function App() {
 
   const location = useLocation(); 
 
   return (
-    <div className="App">
+    <div className={style.App}>
       {/* Otras maneras de enrutar */}
       {/* <Route exact path='/' component={Landing}/> */}
       {/* <Route exact path='/' render={() => <Home unaprop='valor'/>}/> */}
