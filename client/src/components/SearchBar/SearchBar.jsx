@@ -140,12 +140,13 @@ const SearchBar = () => {
 
     return (
         <div className={style.container}>
-            <div>
-            <input type="search" placeholder="Videogame..." onChange={changeHandler} value={name}/>
+            <div className={style.buscador}>
+            <input type="text" placeholder="Videogame..." onChange={changeHandler} value={name}/>
             <button onClick={() => verificarNombre()}>buscar</button>
             </div>
-            <div>
-                <button onClick={toggleOptions} value='optionsGenres'>Filtrar por genres</button>
+            
+            <div className={style.container_btn}>
+                <button onClick={toggleOptions} value='optionsGenres' className={style.filtrado}>Order Genre By</button>
                 {options.optionsGenres && ( 
                     <div>
                         {genres.map(genre => {
@@ -164,11 +165,13 @@ const SearchBar = () => {
                         )})}
                     </div>
                 )}
-                <button onClick={toggleOptions} value='optionsAlfab'>Alfabeticamente</button>
+            </div>
+            <div className={style.container_btn}>
+                <button onClick={toggleOptions} value='optionsAlfab' className={style.filtrado}>Order By ABC</button>
                 {options.optionsAlfab && (
                     <div>
                         <label> 
-                            ascendente
+                            Z-A
                             <input
                             type='checkbox'
                             value='ascendente'
@@ -177,7 +180,7 @@ const SearchBar = () => {
                             />
                         </label>
                         <label> 
-                            descendente
+                            A-Z
                             <input
                             type='checkbox'
                             value='descendente'
@@ -187,11 +190,13 @@ const SearchBar = () => {
                         </label>
                     </div>
                 )}
-                <button onClick={toggleOptions} value='optionsRating'>por Rating</button>
+            </div>
+            <div className={style.container_btn}>
+                <button onClick={toggleOptions} value='optionsRating' className={style.filtrado}>Order Rating By</button>
                 {options.optionsRating && (
                     <div>
                         <label> 
-                            ascendente
+                            0-5
                             <input
                             type='checkbox'
                             value='ascendente'
@@ -200,7 +205,7 @@ const SearchBar = () => {
                             />
                         </label>
                         <label> 
-                            descendente
+                            5-0
                             <input
                             type='checkbox'
                             value='descendente'
@@ -210,11 +215,13 @@ const SearchBar = () => {
                         </label>
                     </div>
                 )}
-                <button onClick={toggleOptions} value='optionsCreated'>tipo de game</button>
+            </div>
+            <div className={style.container_btn} >
+                <button onClick={toggleOptions} value='optionsCreated' className={style.filtrado}>Order By</button>
                 {options.optionsCreated && (
                     <div>
                         <label> 
-                            created
+                            DB
                             <input
                             type='checkbox'
                             value='created'
@@ -223,7 +230,7 @@ const SearchBar = () => {
                             />
                         </label>
                         <label> 
-                            not created
+                            API
                             <input
                             type='checkbox'
                             value='notCreated'
@@ -234,6 +241,7 @@ const SearchBar = () => {
                     </div>
                 )}
             </div>
+
         </div>
     )
 }

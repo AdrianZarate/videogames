@@ -5,8 +5,60 @@ body {
 .container {
     display: grid;
     width: 100vw;
-    height: 100px;
+    height: 200px;
     grid-template: repeat(2, 1fr) / repeat(4, 1fr);
-    background-color: rgb(83, 129, 169);
+    /* background-color: rgb(83, 129, 169); */
     margin-top: 20px;
+}
+
+.buscador {
+    grid-area: 1/1/1/5;
+    justify-self: center;
+    align-self: center;
+}
+
+.buscador input {
+    font-family: 'Roboto', sans-serif;
+    margin: 10px;
+    background: none;
+    border: none;
+    outline: none;
+    max-width: 190px;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 9999px;
+    box-shadow: inset 2px 5px 10px #8B8B8B;
+    color: #212121;
+}
+
+.buscador button {
+    font-family: 'Roboto', sans-serif;
+    background-color: #212121;
+    color: #E7E7E7;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #E7E7E7;
+    color: #212121;
+}
+
+.filtrado {
+    font-family: 'Roboto', sans-serif;
+    background-color: #212121;
+    color: #E7E7E7;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    cursor: pointer;
+    position: relative;
+    /* justify-self: center; */
+  }
+
+.container_btn {
+    justify-self: center;
 }

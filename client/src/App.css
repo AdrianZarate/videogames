@@ -1,8 +1,7 @@
 html, body {
     /* background-image: linear-gradient(to right bottom, #212121, #232323, #262626, #282828, #2b2b2b, #363636, #424242,
-     #4e4e4e, #686868, #828282, #9e9e9e, #bbbbbb); */
-     background-image: linear-gradient(to right, #8b8b8b, #949494, #9d9d9d, #a6a6a6, #afafaf, #b7b7b7, #bebebe, #c6c6c6, #cecece, #d6d6d6, #dfdfdf, #e7e7e7);
-
+    #4e4e4e, #686868, #828282, #9e9e9e, #bbbbbb); */
+    background-image: linear-gradient(to right, #8b8b8b, #949494, #9d9d9d, #a6a6a6, #afafaf, #b7b7b7, #bebebe, #c6c6c6, #cecece, #d6d6d6, #dfdfdf, #e7e7e7);
 }
 
 .App {
@@ -10,8 +9,8 @@ html, body {
     text-align: center;
 }
 
-/* #212121  */
-/* #8B8B8B */
-/* #2E2E2E */
-/* #E7E7E7 */
-/* #BBBBBB */
+/* #212121 
+#8B8B8B
+#2E2E2E
+#E7E7E7
+#BBBBBB */

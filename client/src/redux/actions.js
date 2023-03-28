@@ -8,6 +8,7 @@ export const GENRES_SELECTED = 'GENRES_SELECTED';
 export const ORDENAR_ALFABETICAMENTE = 'ORDENAR_ALFABETICAMENTE';
 export const ORDENAR_RATING = 'ORDENAR_RATING';
 export const ORDENAR_CREATED = 'ORDENAR_CREATED';
+export const CLEAN_DATAIL = 'CLEAN_DATAIL';
 
 
 // Busca los primeros 20 juegos de la api
@@ -34,7 +35,7 @@ export const getVideogame = (id) => {
 export const getVideogamesName = (name) => {
     return async function(dispatch) {
         const apiData = await axios.get(`http://localhost:3001/videogames?name=${name}`)
-        // .catch(err => err);
+        .catch(err => alert(err.response.data));
         const videogameFilterName = apiData.data;
 
         dispatch({type: GET_VIDEOGAMES_NAME, payload: videogameFilterName})
@@ -115,7 +116,10 @@ export const ordenarCreated = (tipo) => {
         console.log('el array de created', array);
         let gamesFilterCreated;
         if (tipo === 'created') {
-            gamesFilterCreated = array.filter((game) => game.created === true)
+            gamesFilterCreated = array.filter((game) => game.created === true);
+            if(!gamesFilterCreated.length) {
+                return alert('No se encontraron videogames creados')
+            }
         } else {
             gamesFilterCreated = array.filter((game) => game.created === false)
         }
@@ -123,3 +127,14 @@ export const ordenarCreated = (tipo) => {
         dispatch({type: ORDENAR_RATING, payload: gamesFilterCreated})
     }
 };
+
+export const postVideogame = async (form) => {
+    await axios.post('http://localhost:3001/videogames', form)
+    .then(res => console.log('soy la respuesta del POST',res.data))
+    .catch(err => console.log('SOY EL ERROR DEL POST', form))
+    // .catch(err => console.log('SOY EL ERROR DEL POST', err))
+} 
+
+export const cleanDetail = () => {
+    return {type: CLEAN_DATAIL}
+}

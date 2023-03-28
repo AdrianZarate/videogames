@@ -1,4 +1,4 @@
-import { GET_VIDEOGAME, GET_VIDEOGAMES, GET_VIDEOGAMES_NAME, GET_GENRES, GENRES_SELECTED, ORDENAR_ALFABETICAMENTE, ORDENAR_RATING, ORDENAR_CREATED } from "./actions";
+import { GET_VIDEOGAME, GET_VIDEOGAMES, GET_VIDEOGAMES_NAME, GET_GENRES, GENRES_SELECTED, ORDENAR_ALFABETICAMENTE, ORDENAR_RATING, ORDENAR_CREATED, CLEAN_DATAIL } from "./actions";
 
 const inicialState = {
     videogames: [],
@@ -25,6 +25,8 @@ const rootReducer = (state = inicialState, action) => {
             return {...state, videogames: action.payload}
         case ORDENAR_CREATED:
             return {...state, videogames: action.payload}
+        case CLEAN_DATAIL:
+            return {...state, videogame: []}
         default:
             return {...state};
     }

@@ -19,7 +19,7 @@ const getVideogameHandler = async (req, res) => {
         return res.status(200).json(datos);
 
     } catch (error) {
-        return res.status(400).send(error);
+        return res.status(400).send(error.message);
     }
 };
 
@@ -40,9 +40,9 @@ const postVideogameHandler = async (req, res) => {
 
         const newVideogame = await postVideogame(name, description, platforms, image, release_date, rating, genreId);
 
-        return res.status(200).json(newVideogame);
+        return res.status(200).send('Videojugo creado');
     } catch (error) {
-        return res.status(400).send('soy el error de el post')
+        return res.status(400).send('Videojuego no creado')
     }
 };
 

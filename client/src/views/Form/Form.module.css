@@ -1,0 +1,65 @@
+.formulario {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* width: 500px; */
+    margin-top: 20px;
+    font-family: 'Roboto', sans-serif;
+  }
+  
+.formulario div {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    width: 400px;
+}
+  
+.formulario label {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #e7e7e7;
+}
+  
+.formulario input {
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: none;
+    background-color: #2e2e2e;
+    color: #e7e7e7;
+}
+  
+.formulario input[type="checkbox"] {
+    margin-right: 5px;
+}
+
+.formulario .generos {
+    display: flex;
+    flex-wrap: wrap; /* Asegura que los elementos se envuelvan a varias líneas */
+    gap: 10px;
+    margin-top: 10px;
+    column-count: 2; /* Divide en dos columnas */
+    column-gap: 20px; /* Espacio entre columnas */
+    color: #212121;
+}
+  
+.formulario .generos label {
+    display: block; /* Hace que los elementos de la columna sean bloques para llenar verticalmente */
+}
+  
+.formulario button {
+    padding: 10px;
+    background-color: #bbbbbb;
+    border: none;
+    border-radius: 5px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #212121;
+    cursor: pointer;
+}
+  
+.formulario button:hover {
+    background-color: #8b8b8b;
+}
+  

@@ -123,7 +123,7 @@ const getVideogameName = async (name) => {
         return fusion.slice(0, 15);
     }
 
-    return {error: 'ese nombre no existeaaaaaaaaaaaaaa'}
+    return {error: 'No se encontraron resultados'}
 }
 
 const postVideogame = async (name, description, platforms, image, release_date, rating, genreId) => {

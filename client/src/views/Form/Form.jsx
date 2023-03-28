@@ -1,8 +1,11 @@
 import {useState} from 'react';
-import { useSelector } from 'react-redux';
-import axios from 'axios'
+import { useDispatch, useSelector } from 'react-redux';
+import { postVideogame } from '../../redux/actions';
+import style from './Form.module.css'
 
 const Form = () => {
+
+    const dispatch = useDispatch()
 
     const genres = useSelector(state => state.genres);
 
@@ -82,14 +85,12 @@ const Form = () => {
         if (values.includes('') || values.includes(null)) {
             alert('Por favor completa todos los campos')
         } else {
-            await axios.post('http://localhost:3001/videogames', form)
-            .then(res => console.log('soy la respuesta del POST',res.data))
-            .catch(err => console.log('SOY EL ERROR DEL POST',form))
+            dispatch(postVideogame(form))
         }
     }
 
     return (
-        <form onSubmit={submitHandler}>
+        <form onSubmit={submitHandler} className={style.formulario}>
             <div>
                 <laber >Nombre</laber>
                 <input type='text' value={form.name} onChange={changeHandler} name='name'/>
@@ -103,7 +104,7 @@ const Form = () => {
                 <input type='text' value={form.description} onChange={changeHandler} name='description'/>
             </div>
             <div>
-                <aber>Plataformas</aber>
+                <laber>Plataformas</laber>
                 <input type='text' value={form.platforms} onChange={changeHandler} name='platforms'/>
             </div>
             <div>
@@ -117,8 +118,8 @@ const Form = () => {
             <div>
                 <button onClick={toggleOptions}>Despliegue generos</button>
                 {options && (
-                    <div>{
-                        genres.map((genre, index) => {
+                    <div className={style.generos}>
+                        {genres.map((genre, index) => {
                             return (
                                 <label>
                                     {genre.name}
@@ -128,7 +129,7 @@ const Form = () => {
                                         name='genreId'
                                         // checked={isChecked}
                                         onChange={changeHandler}
-                                     />
+                                    />
                                 </label>
                             )
                         })}

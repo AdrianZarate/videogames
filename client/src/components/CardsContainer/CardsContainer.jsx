@@ -56,14 +56,16 @@ const CardsContainer = () => {
                 </div> 
             } 
 
-            {
-               Array(Math.ceil(videogames.length / itemsPerPage)).fill().map((_, index) => {
-                return (
-                    <button onClick={() => handlerPaginado(index + 1)} >
-                        {index + 1}
-                    </button>
-                )})
-            }
+            <div className={style.container_btn}>
+                {
+                Array(Math.ceil(videogames.length / itemsPerPage)).fill().map((_, index) => {
+                    return (
+                            <button className={style.numero} onClick={() => handlerPaginado(index + 1)} >
+                                {index + 1}
+                            </button>
+                    )})
+                }
+            </div>
                 {/* console.log('soy el array raro',Array(Math.ceil(videogames.length / itemsPerPage)).fill()) */}
         </>
     )
